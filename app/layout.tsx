@@ -1,6 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Mona_Sans } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
+import ConvexClientProvider from "@/providers/ConvexClientProvider";
 
 export const metadata: Metadata = {
   title: {
@@ -22,8 +24,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${monaSans.variable} antialiased`}>{children}</body>
+    <html lang="en" className="h-full overflow-hidden">
+      <body
+        className={`h-full bg-background text-foreground font-sans ${monaSans.variable} antialiased overflow-hidden`}
+      >
+        <ClerkProvider>
+          <ConvexClientProvider>{children}</ConvexClientProvider>
+        </ClerkProvider>
+      </body>
     </html>
   );
 }
