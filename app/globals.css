@@ -116,7 +116,37 @@
     @apply border-border outline-ring/50;
   }
 
+  html,
+  body {
+    @apply h-full overflow-hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans caret-primary;
+
+    /* For Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) var(--background);
+  }
+
   button {
     @apply cursor-pointer;
+  }
+
+  /* For webkit browsers */
+  ::-webkit-scrollbar {
+    @apply w-1 h-1;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary rounded;
+  }
+
+  ::selection {
+    @apply bg-primary text-primary-foreground;
   }
 }

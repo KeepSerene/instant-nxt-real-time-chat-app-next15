@@ -10,6 +10,8 @@ function LoadingIcon({ size = 100 }: { size?: number }) {
         height={size}
         className="animate-pulse duration-700"
       />
+
+      <p className="sr-only">Loading...</p>
     </div>
   );
 }

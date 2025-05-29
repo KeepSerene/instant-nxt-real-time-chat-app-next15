@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Mona_Sans } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import ConvexClientProvider from "@/providers/ConvexClientProvider";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeProvider } from "@/components/ui/theme/theme-provider";
 
 export const metadata: Metadata = {
   title: {
@@ -18,19 +20,26 @@ const monaSans = Mona_Sans({
   subsets: ["latin"],
 });
 
-export default function RootLayout({
+export default function GlobalLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full overflow-hidden">
-      <body
-        className={`h-full bg-background text-foreground font-sans ${monaSans.variable} antialiased overflow-hidden`}
-      >
-        <ClerkProvider>
-          <ConvexClientProvider>{children}</ConvexClientProvider>
-        </ClerkProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${monaSans.variable} antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ClerkProvider>
+            <ConvexClientProvider>
+              <TooltipProvider>{children}</TooltipProvider>
+            </ConvexClientProvider>
+          </ClerkProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
