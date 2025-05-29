@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ActionItemList from "@/components/shared/action-item-list/ActionItemList";
+import AddFriendDialog from "./_components/AddFriendDialog";
 import ChatFallback from "@/components/shared/chat/ChatFallback";
 
 export const metadata: Metadata = {
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
 function FriendsPage() {
   return (
     <>
-      <ActionItemList title="Your friends">FriendsPage</ActionItemList>
+      <ActionItemList title="Your friends" actionItem={<AddFriendDialog />}>
+        FriendsPage
+      </ActionItemList>
 
       <ChatFallback />
     </>

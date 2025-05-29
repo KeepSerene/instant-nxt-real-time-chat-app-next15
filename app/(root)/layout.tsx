@@ -1,8 +1,7 @@
-import type { ReactNode } from "react";
-import MobileNav from "@/components/shared/sidebar/nav/MobileNav";
-import DesktopNav from "@/components/shared/sidebar/nav/DesktopNav";
+import MobileNav from "@/components/shared/sidebar-nav/MobileNav";
+import DesktopNav from "@/components/shared/sidebar-nav/DesktopNav";
 
-function RootLayout({ children }: { children: ReactNode }) {
+function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="size-full p-4 flex flex-col lg:flex-row gap-4">
       <MobileNav />

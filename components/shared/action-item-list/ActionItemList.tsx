@@ -7,10 +7,10 @@ import { cn } from "@/lib/utils";
 type ActionItemListProps = {
   children: React.ReactNode;
   title: string;
-  actionBtn?: React.ReactNode;
+  actionItem?: React.ReactNode;
 };
 
-function ActionItemList({ children, title, actionBtn }: ActionItemListProps) {
+function ActionItemList({ children, title, actionItem }: ActionItemListProps) {
   const { isActive } = useChats();
 
   return (
@@ -25,7 +25,7 @@ function ActionItemList({ children, title, actionBtn }: ActionItemListProps) {
           {title}
         </h1>
 
-        {actionBtn && actionBtn}
+        {actionItem && actionItem}
       </section>
 
       <div className="size-full flex flex-col justify-start items-center gap-2">
