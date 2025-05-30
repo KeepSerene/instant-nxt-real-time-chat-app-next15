@@ -2,7 +2,7 @@ import { mutation } from "./_generated/server";
 import { ConvexError, v } from "convex/values";
 import { getUserByClerkId } from "./_utils";
 
-// Create a new request
+// Create a new friend request
 export const create = mutation({
   args: {
     email: v.string(), // receiver's email
@@ -11,17 +11,19 @@ export const create = mutation({
     const senderIdentity = await ctx.auth.getUserIdentity();
 
     if (!senderIdentity) {
-      throw new ConvexError("Unauthorized sender!");
+      throw new ConvexError("You need to be logged in to send a request.");
     }
 
     if (senderIdentity.email === args.email) {
-      throw new ConvexError("Cannot send a request to yourself!");
+      throw new ConvexError("You can't send a request to yourself!");
     }
 
     const currentUser = await getUserByClerkId(ctx, senderIdentity.subject);
 
     if (!currentUser) {
-      throw new ConvexError("User (sender) not found!");
+      throw new ConvexError(
+        "We couldn't find your user account! Please try again."
+      );
     }
 
     const receiver = await ctx.db
@@ -30,27 +32,35 @@ export const create = mutation({
       .unique();
 
     if (!receiver) {
-      throw new ConvexError("User (receiver) not found!");
+      throw new ConvexError(
+        "No user found with that email address! Please check and try again."
+      );
     }
 
-    const requestAlreadySent = ctx.db
+    const requestAlreadySent = await ctx.db
       .query("requests")
       .withIndex("by_receiver_sender", (q) =>
         q.eq("receiver", receiver._id).eq("sender", currentUser._id)
-      );
+      )
+      .unique();
 
     if (requestAlreadySent) {
-      throw new ConvexError("Request already sent!");
+      throw new ConvexError(
+        "Looks like you've already sent a request to this user."
+      );
     }
 
-    const requestAlreadyReceived = ctx.db
+    const requestAlreadyReceived = await ctx.db
       .query("requests")
       .withIndex("by_receiver_sender", (q) =>
         q.eq("receiver", currentUser._id).eq("sender", receiver._id)
-      );
+      )
+      .unique();
 
     if (requestAlreadyReceived) {
-      throw new ConvexError("Request already received!");
+      throw new ConvexError(
+        "This user has already sent you a request. Check your pending requests!"
+      );
     }
 
     return await ctx.db.insert("requests", {

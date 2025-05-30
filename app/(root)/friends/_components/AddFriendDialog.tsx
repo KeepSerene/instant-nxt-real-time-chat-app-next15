@@ -1,5 +1,6 @@
 "use client";
 
+import { api } from "@/convex/_generated/api";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -7,6 +8,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -17,7 +19,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { UserPlus2 } from "lucide-react";
+import { LoaderIcon, SendIcon, UserPlus2 } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -27,6 +29,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { usePendingMutation } from "@/hooks/usePendingMutation";
+import { ConvexError } from "convex/values";
+import { toast } from "sonner";
 
 const addFriendFormSchema = z.object({
   email: z
@@ -36,6 +41,10 @@ const addFriendFormSchema = z.object({
 });
 
 function AddFriendDialog() {
+  const { isPending, mutate: sendRequest } = usePendingMutation(
+    api.request.create
+  );
+
   const form = useForm<z.infer<typeof addFriendFormSchema>>({
     resolver: zodResolver(addFriendFormSchema),
     defaultValues: {
@@ -43,7 +52,22 @@ function AddFriendDialog() {
     },
   });
 
-  const submitForm = () => {};
+  const submitForm = async (values: z.infer<typeof addFriendFormSchema>) => {
+    try {
+      await sendRequest({ email: values.email });
+      form.reset();
+      toast.success("Connection request sent successfully!");
+    } catch (err) {
+      console.error(
+        err instanceof ConvexError
+          ? err.data
+          : `An unexpected error occurred: ${err}`
+      );
+      toast.error(
+        err instanceof ConvexError ? err.data : "An unexpected error occurred!"
+      );
+    }
+  };
 
   return (
     <Dialog>
@@ -66,7 +90,7 @@ function AddFriendDialog() {
           <DialogTitle>Add Friend</DialogTitle>
 
           <DialogDescription>
-            Send a request to your friend to connect with them!
+            Send your friend a connection request!
           </DialogDescription>
         </DialogHeader>
 
@@ -86,7 +110,27 @@ function AddFriendDialog() {
                   <FormMessage />
                 </FormItem>
               )}
-            ></FormField>
+            />
+
+            <DialogFooter>
+              <Button
+                type="submit"
+                disabled={false}
+                className="flex items-center gap-1"
+              >
+                {isPending ? (
+                  <>
+                    <LoaderIcon className="animate-spin" />
+                    <span>Sending...</span>
+                  </>
+                ) : (
+                  <>
+                    <SendIcon />
+                    <span className="capitalize">Send request</span>
+                  </>
+                )}
+              </Button>
+            </DialogFooter>
           </form>
         </Form>
       </DialogContent>

@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import ConvexClientProvider from "@/providers/ConvexClientProvider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/ui/theme/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: {
@@ -13,6 +14,11 @@ export const metadata: Metadata = {
   },
   description:
     "Connect instantly with InstantNXT — a Next.js 15 chat app powered by Convex for lightning-fast data and ShadCN UI for a sleek, seamless interface.",
+  icons: {
+    icon: "/logo.svg",
+    shortcut: "/logo.svg",
+    apple: "/logo.svg",
+  },
 };
 
 const monaSans = Mona_Sans({
@@ -37,6 +43,8 @@ export default function GlobalLayout({
           <ClerkProvider>
             <ConvexClientProvider>
               <TooltipProvider>{children}</TooltipProvider>
+
+              <Toaster richColors position="top-right" />
             </ConvexClientProvider>
           </ClerkProvider>
         </ThemeProvider>
