@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useChats } from "@/hooks/useChats";
 import { ThemeToggler } from "@/components/ui/theme/theme-toggler";
+import { Badge } from "@/components/ui/badge";
 
 function MobileNav() {
   const { isActive } = useChats();
@@ -40,6 +41,16 @@ function MobileNav() {
                     <span>{item.label}</span>
                   </TooltipContent>
                 </Tooltip>
+
+                {typeof item.incomingRequestCount === "number" &&
+                  item.incomingRequestCount > 0 && (
+                    <Badge
+                      variant="destructive"
+                      className="px-2 absolute left-6 bottom-7"
+                    >
+                      {item.incomingRequestCount}
+                    </Badge>
+                  )}
               </Link>
             </li>
           ))}

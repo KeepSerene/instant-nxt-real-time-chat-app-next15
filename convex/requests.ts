@@ -15,6 +15,7 @@ export const get = query({
 
     // Look up the current user record
     const currentUser = await getUserByClerkId(ctx, senderIdentity.subject);
+
     if (!currentUser) {
       throw new ConvexError("We couldn't find your account! Please try again.");
     }
@@ -43,8 +44,30 @@ export const get = query({
   },
 });
 
-// Fetch the request count
+// Fetch the total incoming request count
 export const count = query({
   args: {},
-  async handler(ctx, args) {},
+  async handler(ctx, args) {
+    // Ensure the user is authenticated
+    const senderIdentity = await ctx.auth.getUserIdentity();
+
+    if (!senderIdentity) {
+      throw new ConvexError("Please sign in to view your friend requests.");
+    }
+
+    // Look up the current user record
+    const currentUser = await getUserByClerkId(ctx, senderIdentity.subject);
+
+    if (!currentUser) {
+      throw new ConvexError("We couldn't find your account! Please try again.");
+    }
+
+    // Query for requests where the current user is the receiver
+    const requests = await ctx.db
+      .query("requests")
+      .withIndex("by_receiver", (q) => q.eq("receiver", currentUser._id))
+      .collect();
+
+    return requests.length;
+  },
 });

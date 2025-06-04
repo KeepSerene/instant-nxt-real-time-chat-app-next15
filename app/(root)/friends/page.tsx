@@ -21,7 +21,7 @@ function FriendsPage() {
       <ActionItemList title="Your friends" actionItem={<AddFriendDialog />}>
         {incomingRequests ? (
           incomingRequests.length === 0 ? (
-            <p className="size-full flex justify-center items-center">
+            <p className="size-full text-muted-foreground text-sm text-center flex justify-center items-center">
               Your InstantNXT inbox is empty! 🚀
               <br />
               Send a request or invite a friend to start chatting.
@@ -38,12 +38,14 @@ function FriendsPage() {
             ))
           )
         ) : (
-          <LoaderIcon
-            role="status"
-            aria-live="polite"
-            aria-label="Loading friend requests"
-            className="size-8 text-muted-foreground animate-spin"
-          />
+          <div className="size-full flex justify-center items-center">
+            <LoaderIcon
+              role="status"
+              aria-live="polite"
+              aria-label="Loading friend requests"
+              className="size-8 text-muted-foreground animate-spin"
+            />
+          </div>
         )}
       </ActionItemList>
 

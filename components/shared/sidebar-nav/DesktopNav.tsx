@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { ThemeToggler } from "@/components/ui/theme/theme-toggler";
+import { Badge } from "@/components/ui/badge";
 
 function DesktopNav() {
   const navItems = useNavigation();
@@ -36,6 +37,16 @@ function DesktopNav() {
                     <span>{item.label}</span>
                   </TooltipContent>
                 </Tooltip>
+
+                {typeof item.incomingRequestCount === "number" &&
+                  item.incomingRequestCount > 0 && (
+                    <Badge
+                      variant="destructive"
+                      className="px-2 absolute left-6 bottom-7"
+                    >
+                      {item.incomingRequestCount}
+                    </Badge>
+                  )}
               </Link>
             </li>
           ))}
