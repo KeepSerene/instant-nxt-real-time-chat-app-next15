@@ -1,5 +1,5 @@
-import ChatFallback from "@/components/shared/chat/ChatFallback";
 import type { Metadata } from "next";
+import ActionItemList from "@/components/shared/action-item-list/ActionItemList";
 
 export const metadata: Metadata = {
   title: "Your Chats",
@@ -8,7 +8,11 @@ export const metadata: Metadata = {
 type Props = {};
 
 const ChatsPage = (props: Props) => {
-  return <ChatFallback />;
+  return (
+    <>
+      <ActionItemList title="Your chats">Chats page</ActionItemList>
+    </>
+  );
 };
 
 export default ChatsPage;
