@@ -1,18 +1,10 @@
 import type { Metadata } from "next";
-import ActionItemList from "@/components/shared/action-item-list/ActionItemList";
+import ChatList from "./_components/ChatList";
 
 export const metadata: Metadata = {
   title: "Your Chats",
 };
 
-type Props = {};
-
-const ChatsPage = (props: Props) => {
-  return (
-    <>
-      <ActionItemList title="Your chats">Chats page</ActionItemList>
-    </>
-  );
-};
+const ChatsPage = () => <ChatList />;
 
 export default ChatsPage;
