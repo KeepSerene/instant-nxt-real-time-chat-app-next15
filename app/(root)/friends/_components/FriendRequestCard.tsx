@@ -29,9 +29,10 @@ function FriendRequestCard({
   avatarUrl,
   email,
 }: FriendRequestCardProps) {
-  const { mutate: rejectFriendRequest, isPending } = usePendingMutation(
-    api.request.reject
-  );
+  const { mutate: acceptFriendRequest, isPending: acceptancePending } =
+    usePendingMutation(api.request.accept);
+  const { mutate: rejectFriendRequest, isPending: rejectionPending } =
+    usePendingMutation(api.request.reject);
 
   return (
     <Card className="w-full p-2 flex flex-row justify-between items-center gap-2">
@@ -60,10 +61,26 @@ function FriendRequestCard({
           <TooltipTrigger asChild>
             <Button
               size="icon"
-              onClick={() => {}}
-              disabled={isPending}
+              onClick={() => {
+                acceptFriendRequest({ id })
+                  .then((_) => {
+                    toast.success(
+                      "Yay! You have a new friend now. Happy chatting..."
+                    );
+                  })
+                  .catch((err) => {
+                    toast.error(
+                      err instanceof ConvexError
+                        ? err.data
+                        : "An unexpected error occurred while accepting the request!"
+                    );
+                  });
+              }}
+              disabled={acceptancePending || rejectionPending}
               aria-label={
-                isPending ? "Accepting request..." : "Accept friend request"
+                acceptancePending
+                  ? "Accepting request..."
+                  : "Accept friend request"
               }
             >
               <CheckCircleIcon className="size-4" />
@@ -84,17 +101,21 @@ function FriendRequestCard({
                     toast.success("Friend request rejected successfully!");
                   })
                   .catch((err) => {
-                    err instanceof ConvexError
-                      ? toast.error(err.data)
-                      : "An unexpected error occurred while rejecting the request!";
+                    toast.error(
+                      err instanceof ConvexError
+                        ? err.data
+                        : "An unexpected error occurred while rejecting the request!"
+                    );
                   })
               }
-              disabled={isPending}
+              disabled={rejectionPending || acceptancePending}
               aria-label={
-                isPending ? "Rejecting request..." : "Reject friend request"
+                rejectionPending
+                  ? "Rejecting request..."
+                  : "Reject friend request"
               }
             >
-              {isPending ? (
+              {rejectionPending ? (
                 <Loader className="size-4 animate-spin" />
               ) : (
                 <XCircleIcon className="size-4" />

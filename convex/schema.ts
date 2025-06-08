@@ -26,12 +26,12 @@ export default defineSchema({
   }),
   // friends table
   friends: defineTable({
-    user1: v.id("users"),
-    user2: v.id("users"),
+    userId: v.id("users"), // user -> The “owner” of this friend-row
+    friendId: v.id("users"), // friend -> The person they’re friends with
     chatId: v.id("chats"),
   })
-    .index("by_user1", ["user1"])
-    .index("by_user2", ["user2"])
+    .index("by_userId", ["userId"])
+    .index("by_friendId", ["friendId"])
     .index("by_chatId", ["chatId"]),
   // messages table
   messages: defineTable({
