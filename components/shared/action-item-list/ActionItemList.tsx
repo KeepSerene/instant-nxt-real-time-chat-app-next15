@@ -1,8 +1,4 @@
-"use client";
-
-import { useChats } from "@/hooks/useChats";
 import { Card } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 
 type ActionItemListProps = {
   children: React.ReactNode;
@@ -11,16 +7,9 @@ type ActionItemListProps = {
 };
 
 function ActionItemList({ children, title, actionItem }: ActionItemListProps) {
-  const { isActive } = useChats();
-
   return (
-    <Card
-      className={cn(
-        "hidden size-full p-2 lg:flex-none lg:w-80",
-        isActive ? "lg:block" : "block"
-      )}
-    >
-      <section className="mb-4 flex justify-between items-center">
+    <Card className={"lg:flex-none w-full lg:w-80 py-0 flex flex-col gap-4"}>
+      <section className="flex justify-between items-center p-2">
         <h1 className="text-2xl font-semibold capitalize tracking-tight">
           {title}
         </h1>
@@ -28,7 +17,7 @@ function ActionItemList({ children, title, actionItem }: ActionItemListProps) {
         {actionItem && actionItem}
       </section>
 
-      <div className="size-full flex flex-col justify-start items-center gap-2">
+      <div className="flex-1 p-2 pt-0 overflow-y-auto flex flex-col justify-start items-center gap-2">
         {children}
       </div>
     </Card>

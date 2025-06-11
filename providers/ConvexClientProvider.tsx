@@ -9,7 +9,7 @@ import {
 } from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { SignIn, useAuth } from "@clerk/nextjs";
-import LoadingIcon from "@/components/shared/LoadingIcon";
+import LoadingScreen from "@/components/shared/LoadingScreen";
 
 if (!process.env.NEXT_PUBLIC_CONVEX_URL) {
   throw new Error("Missing NEXT_PUBLIC_CONVEX_URL in your .env.local file");
@@ -41,7 +41,7 @@ export default function ConvexClientProvider({
       <Authenticated>{children}</Authenticated>
 
       <AuthLoading>
-        <LoadingIcon />
+        <LoadingScreen />
       </AuthLoading>
     </ConvexProviderWithClerk>
   );

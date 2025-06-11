@@ -2,8 +2,6 @@
 
 import type { Id } from "@/convex/_generated/dataModel";
 import { Card } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getUsernameInitials } from "@/lib/utils";
 import { CheckCircleIcon, Loader, User2Icon, XCircleIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,6 +13,7 @@ import { usePendingMutation } from "@/hooks/usePendingMutation";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import { ConvexError } from "convex/values";
+import FriendAvatar from "@/components/shared/FriendAvatar";
 
 type FriendRequestCardProps = {
   id: Id<"requests">;
@@ -37,17 +36,7 @@ function FriendRequestCard({
   return (
     <Card className="w-full p-2 flex flex-row justify-between items-center gap-2">
       <div className="truncate flex items-center gap-4">
-        <Avatar>
-          <AvatarImage src={avatarUrl} />
-
-          <AvatarFallback>
-            {getUsernameInitials(username) ? (
-              getUsernameInitials(username)
-            ) : (
-              <User2Icon />
-            )}
-          </AvatarFallback>
-        </Avatar>
+        <FriendAvatar avatarUrl={avatarUrl} username={username} />
 
         <section className="truncate flex flex-col justify-center">
           <h4 className="truncate">{username}</h4>

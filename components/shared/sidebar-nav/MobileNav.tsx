@@ -10,12 +10,12 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { useChats } from "@/hooks/useChats";
+import { useChat } from "@/hooks/useChat";
 import { ThemeToggler } from "@/components/ui/theme/theme-toggler";
 import { Badge } from "@/components/ui/badge";
 
 function MobileNav() {
-  const { isActive } = useChats();
+  const { isActive } = useChat();
   const navItems = useNavigation();
 
   if (isActive) return null;

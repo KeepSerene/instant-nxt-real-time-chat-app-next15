@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-function LoadingIcon({ size = 100 }: { size?: number }) {
+function LoadingScreen({ size = 100 }: { size?: number }) {
   return (
     <div className="size-full flex justify-center items-center">
       <Image
@@ -16,4 +16,4 @@ function LoadingIcon({ size = 100 }: { size?: number }) {
   );
 }
 
-export default LoadingIcon;
+export default LoadingScreen;

@@ -14,7 +14,7 @@ function ChatFallback() {
 
       <p className="text-muted-foreground text-center">
         Ready to spark a conversation? <br />
-        Select or start a chat to experience <strong>InstantNXT</strong>!
+        Select or start a chat to experience <strong>InstantNXT!</strong>
       </p>
     </Card>
   );
