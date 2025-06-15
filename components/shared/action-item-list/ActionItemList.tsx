@@ -1,3 +1,7 @@
+"use client";
+
+import { useChat } from "@/hooks/useChat";
+import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 
 type ActionItemListProps = {
@@ -7,8 +11,15 @@ type ActionItemListProps = {
 };
 
 function ActionItemList({ children, title, actionItem }: ActionItemListProps) {
+  const { isActive } = useChat();
+
   return (
-    <Card className={"lg:flex-none w-full lg:w-80 py-0 flex flex-col gap-4"}>
+    <Card
+      className={cn(
+        "hidden lg:flex-none w-full lg:w-80 py-0 lg:flex flex-col gap-4",
+        isActive ? "hidden" : "flex"
+      )}
+    >
       <section className="flex justify-between items-center p-2">
         <h1 className="text-2xl font-semibold capitalize tracking-tight">
           {title}

@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
-import ChatWrapper from "@/components/shared/chat/ChatWrapper";
+import { Id } from "@/convex/_generated/dataModel";
+import ChatPageContent from "./_components/ChatPageContent";
 
 export const metadata: Metadata = {
   title: "Chat",
 };
 
-async function ChatPage({ params }: { params: Promise<{ chatId: string }> }) {
+async function ChatPage({
+  params,
+}: {
+  params: Promise<{ chatId: Id<"chats"> }>;
+}) {
   const { chatId } = await params;
 
-  return <ChatWrapper>Chat ID: {chatId}</ChatWrapper>;
+  return <ChatPageContent chatId={chatId} />;
 }
 
 export default ChatPage;
