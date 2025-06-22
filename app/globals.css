@@ -124,9 +124,9 @@
   body {
     @apply bg-background text-foreground font-sans caret-primary;
 
-    /* For Firefox */
-    scrollbar-width: thin;
-    scrollbar-color: var(--primary) var(--background);
+    /* Hide scrollbar */
+    scrollbar-width: none; /* for Firefox */
+    -ms-overflow-style: none;
   }
 
   button {
