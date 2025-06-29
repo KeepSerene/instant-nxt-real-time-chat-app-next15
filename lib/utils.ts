@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { format } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -42,3 +43,10 @@ export function getUsernameInitials(username: string): string {
 
   return firstTwo.toUpperCase();
 }
+
+/**
+ * Formats a Unix timestamp (ms) into "HH:mm · dd/MM/yy",
+ * e.g. "14:35 · 29/06/25"
+ */
+export const formatTimestamp = (timestamp: number): string =>
+  format(timestamp, "HH:mm · dd/MM/yy");

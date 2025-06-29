@@ -11,9 +11,17 @@ interface DMChatCardProps {
   id: Id<"chats">;
   username: string;
   avatarUrl: string;
+  lastMsgSender?: string;
+  lastMsgContent?: string;
 }
 
-function DMChatCard({ id, username, avatarUrl }: DMChatCardProps) {
+function DMChatCard({
+  id,
+  username,
+  avatarUrl,
+  lastMsgSender,
+  lastMsgContent,
+}: DMChatCardProps) {
   const router = useRouter();
   const { isActive } = useChat();
 
@@ -21,6 +29,7 @@ function DMChatCard({ id, username, avatarUrl }: DMChatCardProps) {
     <Card
       tabIndex={0} // makes it keyboard focusable
       onClick={() => router.push(`/chats/${id}`)}
+      title={lastMsgContent && lastMsgContent}
       className={cn(
         "w-full truncate p-2 cursor-pointer outline-2 outline-primary/50 outline-offset-2 focus-visible:outline flex flex-row items-center gap-4",
         isActive
@@ -33,9 +42,17 @@ function DMChatCard({ id, username, avatarUrl }: DMChatCardProps) {
 
         <section className="truncate flex flex-col">
           <h4 className="truncate">{username}</h4>
-          <p className="text-muted-foreground text-sm truncate">
-            Spark the conversation!
-          </p>
+
+          {lastMsgSender && lastMsgContent ? (
+            <div className="text-muted-foreground text-sm truncate flex">
+              <p className="font-semibold">{lastMsgSender}:&nbsp;</p>
+              <p className="truncate">{lastMsgContent}</p>
+            </div>
+          ) : (
+            <p className="text-muted-foreground text-sm truncate">
+              Spark the conversation!
+            </p>
+          )}
         </section>
       </div>
     </Card>

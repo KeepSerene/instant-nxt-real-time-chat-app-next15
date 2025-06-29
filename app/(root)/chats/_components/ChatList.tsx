@@ -27,6 +27,8 @@ function ChatList() {
                   id={chatDetails.chat._id}
                   username={chatDetails.otherUser?.username ?? "User"}
                   avatarUrl={chatDetails.otherUser?.avatarUrl ?? ""}
+                  lastMsgSender={chatDetails.lastMsg?.senderName}
+                  lastMsgContent={chatDetails.lastMsg?.content}
                 />
               )
             );
