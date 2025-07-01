@@ -1,9 +1,27 @@
 import FriendAvatar from "@/components/shared/FriendAvatar";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CircleArrowLeft } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
+import { CircleArrowLeft, Settings2Icon } from "lucide-react";
 import Link from "next/link";
 
-function Header({ avatarUrl, name }: { avatarUrl?: string; name: string }) {
+interface HeaderProps {
+  avatarUrl?: string;
+  name: string;
+  options?: {
+    label: string;
+    isDestructive: boolean;
+    onClickHandler: () => void;
+  }[];
+}
+
+function Header({ avatarUrl, name, options }: HeaderProps) {
   return (
     <Card className="w-full rounded-lg p-2 flex justify-between items-center">
       <section className="w-full flex items-center gap-2">
@@ -19,6 +37,37 @@ function Header({ avatarUrl, name }: { avatarUrl?: string; name: string }) {
 
         <h2 className="font-semibold">{name}</h2>
       </section>
+
+      <div className="flex items-center gap-2">
+        {options && (
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Button
+                variant="secondary"
+                size="icon"
+                aria-label="Open settings"
+              >
+                <Settings2Icon />
+              </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent>
+              {options.map((option, index) => (
+                <DropdownMenuItem
+                  key={index}
+                  onClick={option.onClickHandler}
+                  className={cn(
+                    "font-semibold",
+                    option.isDestructive ? "text-destructive" : ""
+                  )}
+                >
+                  {option.label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
+      </div>
     </Card>
   );
 }
