@@ -23,7 +23,7 @@ interface HeaderProps {
 
 function Header({ avatarUrl, name, options }: HeaderProps) {
   return (
-    <Card className="w-full rounded-lg p-2 flex justify-between items-center">
+    <Card className="w-full rounded-lg p-2 flex flex-row justify-between items-center">
       <section className="w-full flex items-center gap-2">
         <Link
           href="/chats"
@@ -41,7 +41,7 @@ function Header({ avatarUrl, name, options }: HeaderProps) {
       <div className="flex items-center gap-2">
         {options && (
           <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger asChild>
               <Button
                 variant="secondary"
                 size="icon"
