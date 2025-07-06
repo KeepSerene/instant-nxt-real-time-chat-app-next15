@@ -16,7 +16,6 @@ export function usePendingMutation(mutationToRun: any) {
         return await mutationFn(payload);
       } catch (err) {
         console.error("Oops! Something went wrong:", err);
-
         throw err;
       } finally {
         setIsPending(false);

@@ -57,7 +57,7 @@ function Header({ avatarUrl, name, options }: HeaderProps) {
                   key={index}
                   onClick={option.onClickHandler}
                   className={cn(
-                    "font-semibold",
+                    "font-semibold cursor-pointer",
                     option.isDestructive ? "text-destructive" : ""
                   )}
                 >

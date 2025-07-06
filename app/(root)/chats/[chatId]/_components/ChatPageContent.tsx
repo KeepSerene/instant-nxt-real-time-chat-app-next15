@@ -9,6 +9,7 @@ import { Loader } from "lucide-react";
 import Header from "./Header";
 import View from "./view/View";
 import MessageBox from "./message-box/MessageBox";
+import RemoveFriendDialog from "./dialogs/RemoveFriendDialog";
 
 function ChatPageContent({ chatId }: { chatId: Id<"chats"> }) {
   const [isRemoveFrndModalOpen, setIsRemoveFrndModalOpen] = useState(false);
@@ -67,6 +68,11 @@ function ChatPageContent({ chatId }: { chatId: Id<"chats"> }) {
       />
       <View />
       <MessageBox />
+      <RemoveFriendDialog
+        chatId={chatId}
+        isOpen={isRemoveFrndModalOpen}
+        setIsOpen={setIsRemoveFrndModalOpen}
+      />
     </ChatWrapper>
   );
 }
