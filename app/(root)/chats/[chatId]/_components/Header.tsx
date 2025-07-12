@@ -27,7 +27,7 @@ function Header({ avatarUrl, name, options }: HeaderProps) {
       <section className="w-full flex items-center gap-2">
         <Link
           href="/chats"
-          aria-label="Go back to your chats page"
+          aria-label="Go back to chats page"
           className="lg:hidden transition-colors hover:text-primary focus-visible:text-primary"
         >
           <CircleArrowLeft />
