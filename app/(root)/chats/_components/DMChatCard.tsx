@@ -2,9 +2,8 @@
 
 import type { Id } from "@/convex/_generated/dataModel";
 import { Card } from "@/components/ui/card";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import AvatarComponent from "@/components/shared/AvatarComponent";
-import { useChat } from "@/hooks/useChat";
 import { cn } from "@/lib/utils";
 
 interface DMChatCardProps {
@@ -23,7 +22,8 @@ function DMChatCard({
   lastMsgContent,
 }: DMChatCardProps) {
   const router = useRouter();
-  const { isActive } = useChat();
+  const params = useParams();
+  const isActive = params?.chatId === id;
 
   return (
     <Card
@@ -41,7 +41,9 @@ function DMChatCard({
         <AvatarComponent avatarUrl={avatarUrl} username={username} />
 
         <section className="truncate flex flex-col">
-          <h4 className="truncate">{username}</h4>
+          <h4 aria-label={username} title={username} className="truncate">
+            {username}
+          </h4>
 
           {lastMsgSender && lastMsgContent ? (
             <div className="text-muted-foreground text-sm truncate flex">

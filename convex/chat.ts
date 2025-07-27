@@ -146,3 +146,117 @@ export const createGroup = mutation({
     );
   },
 });
+
+/**
+ * Mutation to delete a group chat and all related records:
+ * - Ensures the user is authenticated.
+ * - Verifies the user exists in our database.
+ * - Confirms the chat and its memberships.
+ * - Removes the chat, memberships, and messages.
+ */
+export const deleteGroup = mutation({
+  args: {
+    chatId: v.id("chats"),
+  },
+  async handler(ctx, { chatId }) {
+    // 1️. Authentication check
+    const userIdentity = await ctx.auth.getUserIdentity();
+    if (!userIdentity) {
+      throw new ConvexError(
+        "Authentication required: please sign in to manage your chats!"
+      );
+    }
+
+    // 2️. Lookup current user by their Clerk ID
+    const currentUser = await getUserByClerkId(ctx, userIdentity.subject);
+    if (!currentUser) {
+      throw new ConvexError(
+        "User not found: please reauthenticate or contact support!"
+      );
+    }
+
+    // 3️. Fetch the group chat by ID
+    const groupChatRecord = await ctx.db.get(chatId);
+    if (!groupChatRecord) {
+      throw new ConvexError("Chat not found: invalid chat ID!");
+    }
+
+    // 4️. Retrieve all members of this group chat
+    const members = await ctx.db
+      .query("chatMembers")
+      .withIndex("by_chatId", (q) => q.eq("chatId", chatId))
+      .collect();
+    if (members.length <= 1) {
+      throw new ConvexError(
+        "Insufficient members in this group chat: deletion aborted!"
+      );
+    }
+
+    // 5. Collect all messages in this group chat
+    const messages = await ctx.db
+      .query("messages")
+      .withIndex("by_chatId", (q) => q.eq("chatId", chatId))
+      .collect();
+
+    // 6. Delete the group chat record
+    await ctx.db.delete(chatId);
+
+    // 7. Remove each group chat membership record
+    for (const member of members) {
+      await ctx.db.delete(member._id);
+    }
+
+    // 8. Remove all messages in the group chat
+    for (const msg of messages) {
+      await ctx.db.delete(msg._id);
+    }
+  },
+});
+
+/**
+ * Mutation that allows the current authenticated user to leave a group chat.
+ */
+export const leaveGroup = mutation({
+  // Define expected arguments: a single chat ID of type 'chats'.
+  args: {
+    chatId: v.id("chats"),
+  },
+  async handler(ctx, { chatId }) {
+    // 1️. Ensure the user is authenticated.
+    const userIdentity = await ctx.auth.getUserIdentity();
+    if (!userIdentity) {
+      throw new ConvexError(
+        "Authentication required: please sign in to manage your chats!"
+      );
+    }
+
+    // 2️. Fetch the current user record based on their Clerk ID.
+    const currentUser = await getUserByClerkId(ctx, userIdentity.subject);
+    if (!currentUser) {
+      throw new ConvexError(
+        "User not found: please reauthenticate or contact support!"
+      );
+    }
+
+    // 3️. Verify the chat exists.
+    const groupChatRecord = await ctx.db.get(chatId);
+    if (!groupChatRecord) {
+      throw new ConvexError("Chat not found: invalid chat ID!");
+    }
+
+    // 4️. Check that the user is actually a member of this chat.
+    //    We look up the chatMembers table where memberId and chatId match.
+    const member = await ctx.db
+      .query("chatMembers")
+      .withIndex("by_memberId_chatId", (q) =>
+        q.eq("memberId", currentUser._id).eq("chatId", chatId)
+      )
+      .unique();
+    if (!member) {
+      throw new ConvexError("You're not a member of this group chat!");
+    }
+
+    // 5️. Delete the membership record, effectively leaving the group.
+    await ctx.db.delete(member._id);
+  },
+});

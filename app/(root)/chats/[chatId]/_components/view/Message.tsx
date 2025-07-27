@@ -41,7 +41,7 @@ function Message({
           )}
         >
           {type === "text" ? (
-            <p className="text-wrap break-words whitespace-pre-wrap">
+            <p className="text-wrap break-words break-all whitespace-pre-wrap">
               {content}
             </p>
           ) : null}

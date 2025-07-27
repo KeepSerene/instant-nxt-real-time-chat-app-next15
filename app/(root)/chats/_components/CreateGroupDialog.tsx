@@ -185,7 +185,7 @@ export default function CreateGroupDialog() {
 
             {/* Preview of added members */}
             {selectedFriendIds.length > 0 && (
-              <div className="bg-muted flex gap-x-4 overflow-x-auto px-2 py-3">
+              <div className="bg-muted rounded-md px-2 py-3 overflow-x-auto flex gap-x-4">
                 {friends
                   .filter((f) => selectedFriendIds.includes(f._id))
                   .map((member) => (

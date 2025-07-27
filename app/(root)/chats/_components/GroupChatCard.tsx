@@ -2,9 +2,8 @@
 
 import type { Id } from "@/convex/_generated/dataModel";
 import { Card } from "@/components/ui/card";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import AvatarComponent from "@/components/shared/AvatarComponent";
-import { useChat } from "@/hooks/useChat";
 import { cn } from "@/lib/utils";
 
 interface GroupChatCardProps {
@@ -21,7 +20,8 @@ function GroupChatCard({
   lastMsgContent,
 }: GroupChatCardProps) {
   const router = useRouter();
-  const { isActive } = useChat();
+  const params = useParams();
+  const isActive = params?.chatId === id;
 
   return (
     <Card
@@ -39,7 +39,9 @@ function GroupChatCard({
         <AvatarComponent username={name} />
 
         <section className="truncate flex flex-col">
-          <h4 className="truncate">{name}</h4>
+          <h4 aria-label={name} title={name} className="truncate">
+            {name}
+          </h4>
 
           {lastMsgSender && lastMsgContent ? (
             <div className="text-muted-foreground text-sm truncate flex">

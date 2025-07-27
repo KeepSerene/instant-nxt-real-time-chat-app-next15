@@ -10,12 +10,14 @@ import Header from "./Header";
 import View from "./view/View";
 import MessageBox from "./message-box/MessageBox";
 import RemoveFriendDialog from "./dialogs/RemoveFriendDialog";
+import DeleteGroupDialog from "./dialogs/DeleteGroupDialog";
+import LeaveGroupDialog from "./dialogs/LeaveGroupDialog";
 
 function ChatPageContent({ chatId }: { chatId: Id<"chats"> }) {
   const [isRemoveFrndModalOpen, setIsRemoveFrndModalOpen] = useState(false);
   const [isDeleteGroupModalOpen, setIsDeleteGroupModalOpen] = useState(false);
   const [isLeaveGroupModalOpen, setIsLeaveGroupModalOpen] = useState(false);
-  const [callType, setCallType] = useState<"audio" | "video" | null>(null);
+  // const [callType, setCallType] = useState<"audio" | "video" | null>(null);
 
   const chatRecordAndOtherMemberInfo = useQuery(api.chat.get, { id: chatId });
 
@@ -72,6 +74,16 @@ function ChatPageContent({ chatId }: { chatId: Id<"chats"> }) {
         chatId={chatId}
         isOpen={isRemoveFrndModalOpen}
         setIsOpen={setIsRemoveFrndModalOpen}
+      />
+      <DeleteGroupDialog
+        chatId={chatId}
+        isOpen={isDeleteGroupModalOpen}
+        setIsOpen={setIsDeleteGroupModalOpen}
+      />
+      <LeaveGroupDialog
+        chatId={chatId}
+        isOpen={isLeaveGroupModalOpen}
+        setIsOpen={setIsLeaveGroupModalOpen}
       />
     </ChatWrapper>
   );
