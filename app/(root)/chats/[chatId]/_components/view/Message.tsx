@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn, formatTimestamp, getUsernameInitials } from "@/lib/utils";
+import { CheckCheck } from "lucide-react";
 
 interface MessageProps {
   isFromCurrentUser: boolean;
@@ -9,6 +10,7 @@ interface MessageProps {
   content: string[];
   createdAt: number;
   type: string;
+  readReceipt?: React.ReactNode;
 }
 
 function Message({
@@ -19,6 +21,7 @@ function Message({
   content,
   createdAt,
   type,
+  readReceipt,
 }: MessageProps) {
   return (
     <div
@@ -57,6 +60,14 @@ function Message({
             {formatTimestamp(createdAt)}
           </span>
         </div>
+
+        {/* only show read receipt for current user's messages and when receipt exists */}
+        {isFromCurrentUser && readReceipt && (
+          <div className="flex items-center gap-x-1 mt-1">
+            <CheckCheck size={12} className="text-primary" />
+            {readReceipt}
+          </div>
+        )}
       </div>
 
       <Avatar

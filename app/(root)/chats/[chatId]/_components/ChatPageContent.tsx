@@ -17,18 +17,23 @@ function ChatPageContent({ chatId }: { chatId: Id<"chats"> }) {
   const [isRemoveFrndModalOpen, setIsRemoveFrndModalOpen] = useState(false);
   const [isDeleteGroupModalOpen, setIsDeleteGroupModalOpen] = useState(false);
   const [isLeaveGroupModalOpen, setIsLeaveGroupModalOpen] = useState(false);
-  // const [callType, setCallType] = useState<"audio" | "video" | null>(null);
 
   const chatRecordAndOtherMemberInfo = useQuery(api.chat.get, { id: chatId });
 
   if (chatRecordAndOtherMemberInfo === undefined) {
-    <div className="size-full flex justify-center items-center">
-      <Loader className="size-8" />
-    </div>;
-  } else if (chatRecordAndOtherMemberInfo === null) {
-    <p className="size-full flex justify-center items-center">
-      Oops! No such chat exists...🥺
-    </p>;
+    return (
+      <div className="size-full flex justify-center items-center">
+        <Loader className="size-8" />
+      </div>
+    );
+  }
+
+  if (chatRecordAndOtherMemberInfo === null) {
+    return (
+      <p className="size-full flex justify-center items-center">
+        Oops! No such chat exists...🥺
+      </p>
+    );
   }
 
   return (
@@ -68,7 +73,15 @@ function ChatPageContent({ chatId }: { chatId: Id<"chats"> }) {
               ]
         }
       />
-      <View />
+      <View
+        chatMembers={
+          chatRecordAndOtherMemberInfo?.isGroup
+            ? chatRecordAndOtherMemberInfo.otherMembers || []
+            : chatRecordAndOtherMemberInfo?.otherMember
+            ? [chatRecordAndOtherMemberInfo.otherMember]
+            : []
+        }
+      />
       <MessageBox />
       <RemoveFriendDialog
         chatId={chatId}

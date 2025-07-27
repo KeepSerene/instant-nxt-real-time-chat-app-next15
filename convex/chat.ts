@@ -260,3 +260,57 @@ export const leaveGroup = mutation({
     await ctx.db.delete(member._id);
   },
 });
+
+/**
+ * Mutation to mark a specific message as read by the current user in a chat.
+ */
+export const markRead = mutation({
+  // Define expected arguments: chat ID and message ID.
+  args: {
+    chatId: v.id("chats"),
+    messageId: v.id("messages"),
+  },
+  async handler(ctx, { chatId, messageId }) {
+    // 1️. Ensure the user is authenticated.
+    const userIdentity = await ctx.auth.getUserIdentity();
+    if (!userIdentity) {
+      throw new ConvexError(
+        "Authentication required: please sign in to manage your chats!"
+      );
+    }
+
+    // 2️. Fetch the current user record based on their Clerk ID.
+    const currentUser = await getUserByClerkId(ctx, userIdentity.subject);
+    if (!currentUser) {
+      throw new ConvexError(
+        "User not found: please reauthenticate or contact support!"
+      );
+    }
+
+    // 3️. Confirm the user is a member of the specified chat.
+    //    We query the chatMembers table by memberId and chatId.
+    const membership = await ctx.db
+      .query("chatMembers")
+      .withIndex("by_memberId_chatId", (q) =>
+        q.eq("memberId", currentUser._id).eq("chatId", chatId)
+      )
+      .unique();
+    if (!membership) {
+      throw new ConvexError(
+        "Permission denied: you are not part of this chat."
+      );
+    }
+
+    // 4️. Fetch the target message to ensure it exists.
+    const messageRecord = await ctx.db.get(messageId);
+    if (!messageRecord) {
+      throw new ConvexError("Message not found: invalid message ID.");
+    }
+
+    // 5️. Update the member's lastSeenMessage field to this message.
+    //    This marks all messages up to this one as read for this user.
+    await ctx.db.patch(membership._id, {
+      lastSeenMessage: messageRecord._id,
+    });
+  },
+});
