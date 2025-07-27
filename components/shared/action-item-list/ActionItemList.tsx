@@ -28,7 +28,7 @@ function ActionItemList({ children, title, actionItem }: ActionItemListProps) {
         {actionItem && actionItem}
       </section>
 
-      <div className="flex-1 p-2 pt-0 overflow-y-auto flex flex-col justify-start items-center gap-2">
+      <div className="flex-1 p-2 overflow-y-auto flex flex-col justify-start items-center gap-3">
         {children}
       </div>
     </Card>

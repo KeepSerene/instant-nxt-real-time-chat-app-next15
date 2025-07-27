@@ -1,4 +1,4 @@
-import { query } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import { ConvexError, v } from "convex/values";
 import { getUserByClerkId } from "./_utils";
 
@@ -108,5 +108,41 @@ export const get = query({
       otherMember: null, // not applicable for group chat
       otherMembers: otherProfiles,
     };
+  },
+});
+
+export const createGroup = mutation({
+  args: {
+    members: v.array(v.id("users")),
+    name: v.string(),
+  },
+  async handler(ctx, args) {
+    const userIdentity = await ctx.auth.getUserIdentity();
+
+    if (!userIdentity) {
+      throw new ConvexError("You must be signed in to view your chats!");
+    }
+
+    const me = await getUserByClerkId(ctx, userIdentity.subject);
+
+    if (!me) {
+      throw new ConvexError(
+        "Your user account could not be found! Please try signing in again."
+      );
+    }
+
+    const chatId = await ctx.db.insert("chats", {
+      isGroup: true,
+      name: args.name,
+    });
+
+    await Promise.all(
+      [...args.members, me._id].map(async (memberId) => {
+        await ctx.db.insert("chatMembers", {
+          memberId,
+          chatId,
+        });
+      })
+    );
   },
 });

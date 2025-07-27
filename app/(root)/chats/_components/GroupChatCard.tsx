@@ -7,21 +7,19 @@ import FriendAvatar from "@/components/shared/FriendAvatar";
 import { useChat } from "@/hooks/useChat";
 import { cn } from "@/lib/utils";
 
-interface DMChatCardProps {
+interface GroupChatCardProps {
   id: Id<"chats">;
-  username: string;
-  avatarUrl: string;
+  name: string;
   lastMsgSender?: string;
   lastMsgContent?: string;
 }
 
-function DMChatCard({
+function GroupChatCard({
   id,
-  username,
-  avatarUrl,
+  name,
   lastMsgSender,
   lastMsgContent,
-}: DMChatCardProps) {
+}: GroupChatCardProps) {
   const router = useRouter();
   const { isActive } = useChat();
 
@@ -38,10 +36,10 @@ function DMChatCard({
       )}
     >
       <div className="truncate flex items-center gap-4">
-        <FriendAvatar avatarUrl={avatarUrl} username={username} />
+        <FriendAvatar username={name} />
 
         <section className="truncate flex flex-col">
-          <h4 className="truncate">{username}</h4>
+          <h4 className="truncate">{name}</h4>
 
           {lastMsgSender && lastMsgContent ? (
             <div className="text-muted-foreground text-sm truncate flex">
@@ -59,4 +57,4 @@ function DMChatCard({
   );
 }
 
-export default DMChatCard;
+export default GroupChatCard;
