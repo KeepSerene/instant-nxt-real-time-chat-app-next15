@@ -40,8 +40,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import FriendAvatar from "@/components/shared/FriendAvatar";
-import { Card } from "@/components/ui/card";
+import AvatarComponent from "@/components/shared/AvatarComponent";
 
 // Schema for form validation
 const createGroupSchema = z.object({
@@ -172,7 +171,7 @@ export default function CreateGroupDialog() {
                             }}
                             className="flex items-center space-x-2 p-2"
                           >
-                            <FriendAvatar {...friend} />
+                            <AvatarComponent {...friend} />
                             <span className="truncate">{friend.username}</span>
                           </DropdownMenuCheckboxItem>
                         ))}
@@ -186,7 +185,7 @@ export default function CreateGroupDialog() {
 
             {/* Preview of added members */}
             {selectedFriendIds.length > 0 && (
-              <div className="flex space-x-4 overflow-x-auto px-2 py-3">
+              <div className="bg-muted flex gap-x-4 overflow-x-auto px-2 py-3">
                 {friends
                   .filter((f) => selectedFriendIds.includes(f._id))
                   .map((member) => (
@@ -195,7 +194,7 @@ export default function CreateGroupDialog() {
                       className="flex-shrink-0 size-12 relative"
                     >
                       {/* Avatar */}
-                      <FriendAvatar
+                      <AvatarComponent
                         {...member}
                         className="size-full rounded-full ring-2 ring-primary/80 shadow-sm"
                       />

@@ -1,4 +1,4 @@
-import FriendAvatar from "@/components/shared/FriendAvatar";
+import AvatarComponent from "@/components/shared/AvatarComponent";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -33,7 +33,7 @@ function Header({ avatarUrl, name, options }: HeaderProps) {
           <CircleArrowLeft />
         </Link>
 
-        <FriendAvatar avatarUrl={avatarUrl ?? ""} username={name} />
+        <AvatarComponent avatarUrl={avatarUrl ?? ""} username={name} />
 
         <h2 className="font-semibold">{name}</h2>
       </section>

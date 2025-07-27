@@ -13,7 +13,7 @@ import { usePendingMutation } from "@/hooks/usePendingMutation";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import { ConvexError } from "convex/values";
-import FriendAvatar from "@/components/shared/FriendAvatar";
+import AvatarComponent from "@/components/shared/AvatarComponent";
 
 type FriendRequestCardProps = {
   id: Id<"requests">;
@@ -36,7 +36,7 @@ function FriendRequestCard({
   return (
     <Card className="w-full p-2 flex flex-row justify-between items-center gap-2">
       <div className="truncate flex items-center gap-4">
-        <FriendAvatar avatarUrl={avatarUrl} username={username} />
+        <AvatarComponent avatarUrl={avatarUrl} username={username} />
 
         <section className="truncate flex flex-col justify-center">
           <h4 className="truncate">{username}</h4>

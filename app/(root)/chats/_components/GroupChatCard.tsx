@@ -3,7 +3,7 @@
 import type { Id } from "@/convex/_generated/dataModel";
 import { Card } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
-import FriendAvatar from "@/components/shared/FriendAvatar";
+import AvatarComponent from "@/components/shared/AvatarComponent";
 import { useChat } from "@/hooks/useChat";
 import { cn } from "@/lib/utils";
 
@@ -36,7 +36,7 @@ function GroupChatCard({
       )}
     >
       <div className="truncate flex items-center gap-4">
-        <FriendAvatar username={name} />
+        <AvatarComponent username={name} />
 
         <section className="truncate flex flex-col">
           <h4 className="truncate">{name}</h4>

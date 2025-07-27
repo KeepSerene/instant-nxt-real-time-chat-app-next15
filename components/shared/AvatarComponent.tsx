@@ -2,13 +2,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { cn, getUsernameInitials } from "@/lib/utils";
 import { User2Icon } from "lucide-react";
 
-interface FriendAvatarProps {
+interface AvatarComponentProps {
   avatarUrl?: string;
   username: string;
   className?: string;
 }
 
-function FriendAvatar({ avatarUrl, username, className }: FriendAvatarProps) {
+function AvatarComponent({
+  avatarUrl,
+  username,
+  className,
+}: AvatarComponentProps) {
   return (
     <Avatar className={cn(className && className)}>
       {avatarUrl && <AvatarImage src={avatarUrl} />}
@@ -24,4 +28,4 @@ function FriendAvatar({ avatarUrl, username, className }: FriendAvatarProps) {
   );
 }
 
-export default FriendAvatar;
+export default AvatarComponent;
