@@ -13,6 +13,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { getUsernameInitials } from "@/lib/utils";
 
 interface ViewProps {
   chatMembers: {
@@ -101,9 +102,13 @@ function View({ chatMembers }: ViewProps) {
       .map((user) => user.username?.split(" ")[0])
       .filter((name): name is string => Boolean(name)); // filter out undefined
 
-    if (readerFirstNames.length === 0) return undefined;
+    const displayNames = readerFirstNames.map((firstName) =>
+      firstName.length > 12 ? getUsernameInitials(firstName) : firstName
+    );
 
-    return renderReadByLabel(readerFirstNames);
+    if (displayNames.length === 0) return undefined;
+
+    return renderReadByLabel(displayNames);
   };
 
   return (
