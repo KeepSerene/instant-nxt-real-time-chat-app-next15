@@ -8,7 +8,7 @@ import {
   Unauthenticated,
 } from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
-import { SignIn, useAuth } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import LoadingScreen from "@/components/shared/LoadingScreen";
 
 if (!process.env.NEXT_PUBLIC_CONVEX_URL) {
@@ -24,18 +24,9 @@ export default function ConvexClientProvider({
 }) {
   return (
     <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+      {/* Unauthenticated users are handled by the root page routing */}
       <Unauthenticated>
-        <div className="min-h-screen flex justify-center items-center">
-          <SignIn
-            routing="hash"
-            signUpUrl="/sign-up"
-            appearance={{
-              elements: {
-                rootBox: "w-full max-w-md",
-              },
-            }}
-          />
-        </div>
+        <LoadingScreen />
       </Unauthenticated>
 
       <Authenticated>{children}</Authenticated>
