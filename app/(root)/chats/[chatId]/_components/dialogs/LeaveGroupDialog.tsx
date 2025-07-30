@@ -51,8 +51,8 @@ export default function LeaveGroupDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>Leave Group Chat?</AlertDialogTitle>
           <AlertDialogDescription>
-            You'll no longer be a part of this group: can no longer view or send
-            messages!
+            You&apos;ll no longer be a part of this group: can no longer view or
+            send messages!
           </AlertDialogDescription>
         </AlertDialogHeader>
 

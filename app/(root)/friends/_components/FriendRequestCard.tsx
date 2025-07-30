@@ -2,7 +2,7 @@
 
 import type { Id } from "@/convex/_generated/dataModel";
 import { Card } from "@/components/ui/card";
-import { CheckCircleIcon, Loader, User2Icon, XCircleIcon } from "lucide-react";
+import { CheckCircleIcon, Loader, XCircleIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -52,7 +52,7 @@ function FriendRequestCard({
               size="icon"
               onClick={() => {
                 acceptFriendRequest({ id })
-                  .then((_) => {
+                  .then(() => {
                     toast.success(
                       "Yay! You have a new friend now. Happy chatting..."
                     );
@@ -86,7 +86,7 @@ function FriendRequestCard({
               size="icon"
               onClick={() =>
                 rejectFriendRequest({ id })
-                  .then((_) => {
+                  .then(() => {
                     toast.success("Friend request rejected successfully!");
                   })
                   .catch((err) => {

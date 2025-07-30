@@ -53,10 +53,10 @@ function RemoveFriendDialog({
           <AlertDialogTitle>Remove this conversation?</AlertDialogTitle>
 
           <AlertDialogDescription>
-            You're about to end your connection with this friend. All messages
-            in this one-on-one chat will be permanently erased and you won't be
-            able to message them again unless you reconnect. This can't be
-            undone.
+            You&apos;re about to end your connection with this friend. All
+            messages in this one-on-one chat will be permanently erased and you
+            won&apos;t be able to message them again unless you reconnect. This
+            can&apos;t be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
 
