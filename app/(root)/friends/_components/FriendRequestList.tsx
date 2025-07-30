@@ -13,7 +13,7 @@ function FriendRequestList() {
       {incomingRequests ? (
         incomingRequests.length === 0 ? (
           <p className="size-full text-muted-foreground text-sm text-center flex justify-center items-center">
-            Your InstantNXT network is empty! 🚀
+            No incoming requests to your InstantNXT network for now!🔍
             <br />
             Send a request or invite a friend to start chatting.
           </p>
