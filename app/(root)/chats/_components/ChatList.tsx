@@ -29,6 +29,7 @@ function ChatList() {
                 name={chatDetails.chat.name ?? "Group Chat"}
                 lastMsgSender={chatDetails.lastMsg?.senderName}
                 lastMsgContent={chatDetails.lastMsg?.content}
+                unreadMsgCount={chatDetails.unreadMsgCount}
               />
             ) : (
               <DMChatCard
@@ -38,6 +39,7 @@ function ChatList() {
                 avatarUrl={chatDetails.otherUser?.avatarUrl ?? ""}
                 lastMsgSender={chatDetails.lastMsg?.senderName}
                 lastMsgContent={chatDetails.lastMsg?.content}
+                unreadMsgCount={chatDetails.unreadMsgCount}
               />
             );
           })

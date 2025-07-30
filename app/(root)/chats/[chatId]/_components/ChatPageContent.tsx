@@ -22,15 +22,15 @@ function ChatPageContent({ chatId }: { chatId: Id<"chats"> }) {
 
   if (chatRecordAndOtherMemberInfo === undefined) {
     return (
-      <div className="size-full flex justify-center items-center">
-        <Loader className="size-8" />
+      <div className="size-full bg-muted text-muted-foreground flex justify-center items-center">
+        <Loader className="size-8 animate-spin" />
       </div>
     );
   }
 
   if (chatRecordAndOtherMemberInfo === null) {
     return (
-      <p className="size-full flex justify-center items-center">
+      <p className="size-full bg-muted text-muted-foreground flex justify-center items-center">
         Oops! No such chat exists...🥺
       </p>
     );

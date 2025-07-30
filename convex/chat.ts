@@ -95,6 +95,7 @@ export const get = query({
           if (!profile) {
             throw new ConvexError(`Member user not found (ID: ${m.memberId})!`);
           }
+
           return {
             ...profile,
             lastSeenMessageId: m.lastSeenMessage,

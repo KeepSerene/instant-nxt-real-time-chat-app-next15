@@ -5,12 +5,14 @@ import { Card } from "@/components/ui/card";
 import { useParams, useRouter } from "next/navigation";
 import AvatarComponent from "@/components/shared/AvatarComponent";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 interface GroupChatCardProps {
   id: Id<"chats">;
   name: string;
   lastMsgSender?: string;
   lastMsgContent?: string;
+  unreadMsgCount: number;
 }
 
 function GroupChatCard({
@@ -18,6 +20,7 @@ function GroupChatCard({
   name,
   lastMsgSender,
   lastMsgContent,
+  unreadMsgCount,
 }: GroupChatCardProps) {
   const router = useRouter();
   const params = useParams();
@@ -29,7 +32,7 @@ function GroupChatCard({
       onClick={() => router.push(`/chats/${id}`)}
       title={lastMsgContent && lastMsgContent}
       className={cn(
-        "w-full truncate p-2 cursor-pointer outline-2 outline-primary/50 outline-offset-2 focus-visible:outline flex flex-row items-center gap-4",
+        "w-full truncate p-2 cursor-pointer outline-2 outline-primary/50 outline-offset-2 focus-visible:outline flex flex-row items-center justify-between",
         isActive
           ? "bg-primary/20"
           : "hover:bg-primary/10 focus-within:bg-primary/10"
@@ -55,6 +58,12 @@ function GroupChatCard({
           )}
         </section>
       </div>
+
+      {typeof unreadMsgCount === "number" && unreadMsgCount > 0 && (
+        <Badge variant="default" className="rounded-full px-2">
+          {unreadMsgCount}
+        </Badge>
+      )}
     </Card>
   );
 }

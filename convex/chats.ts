@@ -41,7 +41,7 @@ export const get = query({
       })
     );
 
-    // 5) For each chat, if it's one‐on‐one, also load the “other” user
+    // 5) For each chat, if it's one‐on‐one, also load the "other" user
     const enrichedChats = await Promise.all(
       chats.map(async (chat) => {
         // Fetch all memberships for this chat
@@ -55,9 +55,37 @@ export const get = query({
           msgId: chat.lastMessageId,
         });
 
+        // Find the current user's membership record for this chat
+        const myMembershipForChat = membershipsForChat.find(
+          (m) => m.memberId === me._id
+        );
+
+        if (!myMembershipForChat) {
+          throw new ConvexError(
+            `User membership not found for chat ${chat._id}!`
+          );
+        }
+
+        const lastSeenMsg = myMembershipForChat.lastSeenMessage
+          ? await ctx.db.get(myMembershipForChat.lastSeenMessage)
+          : null;
+
+        const lastSeenMsgCreationTime = lastSeenMsg
+          ? lastSeenMsg._creationTime
+          : -1;
+
+        const unreadMsgs = await ctx.db
+          .query("messages")
+          .withIndex("by_chatId", (q) => q.eq("chatId", chat._id))
+          .filter((q) =>
+            q.gt(q.field("_creationTime"), lastSeenMsgCreationTime)
+          )
+          .filter((q) => q.neq(q.field("senderId"), me._id))
+          .collect();
+
         if (chat.isGroup) {
-          // Group chat: no single “other” member
-          return { chat, lastMsg };
+          // Group chat: no single "other" member
+          return { chat, lastMsg, unreadMsgCount: unreadMsgs.length };
         }
 
         // One‐on‐one chat: find the membership that isn't the current user
@@ -80,7 +108,7 @@ export const get = query({
           );
         }
 
-        return { chat, otherUser, lastMsg };
+        return { chat, otherUser, lastMsg, unreadMsgCount: unreadMsgs.length };
       })
     );
 

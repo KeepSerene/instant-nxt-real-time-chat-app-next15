@@ -42,7 +42,7 @@ function DesktopNav() {
                   item.incomingRequestCount > 0 && (
                     <Badge
                       variant="destructive"
-                      className="px-2 absolute left-6 bottom-7"
+                      className="rounded-full px-2 absolute left-6 bottom-7"
                     >
                       {item.incomingRequestCount}
                     </Badge>
